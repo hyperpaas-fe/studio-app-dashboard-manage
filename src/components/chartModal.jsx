@@ -62,6 +62,12 @@ function RenderChartModal(props) {
     });
   };
 
+  const clearState = () => {
+    setModelList([]);
+    setLoading(false);
+    form.resetFields();
+  };
+
   const customerFooter = [
     <Button key="cancel" onClick={onCancel}>
       取消
@@ -100,6 +106,7 @@ function RenderChartModal(props) {
       okText="确认"
       onCancel={onCancel}
       destroyOnClose={true}
+      afterClose={clearState}
       footer={customerFooter}
     >
       <Form preserve={false} form={form} layout="vertical" autoComplete="off">
@@ -111,7 +118,11 @@ function RenderChartModal(props) {
           <Input />
         </Form.Item>
 
-        <Form.Item name="type" label="类型" rules={[{ required: true }]}>
+        <Form.Item
+          name="type"
+          label="类型"
+          rules={[{ required: true, message: "类型不能为空" }]}
+        >
           <Select disabled={!!value}>
             <Select.Option value="CARD">卡片</Select.Option>
             <Select.Option value="DASHBOARD">仪表盘</Select.Option>
@@ -123,7 +134,7 @@ function RenderChartModal(props) {
             <Form.Item
               name="modelId"
               label="绑定模型"
-              rules={[{ required: true }]}
+              rules={[{ required: true, message: "绑定模型不能为空" }]}
             >
               <Select
                 options={modelList}

@@ -14,7 +14,7 @@ export function isTenantEnableBi() {
 }
 
 // 用户是否完成预先设置
-export function isBiAvailableForUser(appId) {
+export function isCompletedPreset(appId) {
   return validateAppId(appId).then(() =>
     handleRequest(`/studio/app/${appId}/isEnableBi`)
   );

@@ -52,6 +52,18 @@ const appList = [
     label: "meibiao",
     value: "12b8770f-5513-46ba-936b-2ce087ae0544",
   },
+  {
+    label: "合同管理",
+    value: "43dfcb50-cc3a-4058-97b0-8f6dd4f98398",
+  },
+  {
+    label: "客户管理测试",
+    value: "fb1790e7-a359-4055-9e84-894f91e5a807",
+  },
+  {
+    label: "SRM系统",
+    value: "6adc02c5-0397-47e8-8fda-33108e8305a1",
+  },
 ];
 
 function RenderDemo() {

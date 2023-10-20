@@ -1,6 +1,6 @@
 {
   "name": "@hyperpaas/studio-app-dashboard-manage",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "main": "./dist/index.es.js",
   "scripts": {
@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@hp-view/com-view-result": "^0.0.4",
-    "@hp-view/layout-nav-sider": "^0.0.2",
     "@hp-view/request": "^0.2.7",
     "@hp-view/theme": "^1.0.1",
     "@icon-park/react": "^1.4.2",
@@ -29,7 +28,7 @@
   "exports": {
     ".": {
       "import": "./dist/index.es.js",
-      "require": "./dist/index.umd.js"
+      "require": "./dist/index.es.js"
     }
   },
   "files": [

@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Button, Modal } from "antd";
 
-import Result from "@hp-view/com-view-result";
+import HyperResult from "@hp-view/com-view-result";
 import RenderChartModal from "@/components/chartModal";
 import { deleteChart } from "@/services";
 
@@ -34,7 +34,7 @@ function RenderChartDetail(props) {
   };
 
   let renderContent = (
-    <Result
+    <HyperResult
       status="info"
       isFull={true}
       title="开始创建您的数据仪表盘"
@@ -61,8 +61,8 @@ function RenderChartDetail(props) {
         </div>
 
         <iframe
-          ref={iframeRef}
           className="dashboard-content-iframe"
+          ref={iframeRef}
           src={previewChartUrl}
         />
       </>
