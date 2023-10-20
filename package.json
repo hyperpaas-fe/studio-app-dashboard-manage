@@ -1,0 +1,44 @@
+{
+  "name": "studio-app-dashboard",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "./dist/index.es.js",
+  "scripts": {
+    "dev": "vite",
+    "dev:test": "vite --mode test",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@hp-view/com-view-result": "^0.0.4",
+    "@hp-view/layout-nav-sider": "^0.0.2",
+    "@hp-view/request": "^0.2.7",
+    "@hp-view/theme": "^1.0.1",
+    "@icon-park/react": "^1.4.2",
+    "antd": "~4.22.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.19",
+    "@types/react-dom": "^18.0.6",
+    "@vitejs/plugin-react": "^2.1.0",
+    "less": "^4.1.3",
+    "vite": "^3.1.0",
+    "vite-plugin-mkcert": "^1.9.0"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
+    }
+  },
+  "files": [
+    "package.json",
+    "src",
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://nexus.hyperpaas-inc.com/repository/npm"
+  }
+}
