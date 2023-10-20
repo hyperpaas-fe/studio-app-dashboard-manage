@@ -1,11 +1,10 @@
 {
-  "name": "studio-app-dashboard",
-  "version": "0.0.1",
+  "name": "@hyperpaas/studio-app-dashboard-manage",
+  "version": "0.0.2",
   "type": "module",
   "main": "./dist/index.es.js",
   "scripts": {
     "dev": "vite",
-    "dev:test": "vite --mode test",
     "build": "vite build",
     "preview": "vite preview"
   },

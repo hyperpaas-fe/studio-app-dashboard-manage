@@ -38,6 +38,13 @@ export default defineConfig({
       fileName: (format) => `index.${format}.js`,
     },
   },
+  css: {
+    preprocessorOptions: {
+      less: {
+        javascriptEnabled: true,
+      },
+    },
+  },
   resolve: {
     alias: {
       "@": resolve(__dirname, "src"),
