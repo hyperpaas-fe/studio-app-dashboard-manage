@@ -124,7 +124,7 @@ function RenderChartModal(props) {
           rules={[{ required: true, message: "类型不能为空" }]}
         >
           <Select disabled={!!value}>
-            <Select.Option value="CARD">卡片</Select.Option>
+            <Select.Option value="CARD">数据卡片</Select.Option>
             <Select.Option value="DASHBOARD">仪表盘</Select.Option>
           </Select>
         </Form.Item>

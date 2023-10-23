@@ -7,9 +7,7 @@ import RenderDropdownMenu from "@/components/dropdownMenu";
 
 function RenderChartListSider(props) {
   const { appId, selectedChartId, chartList, dispatch } = props || {};
-
   const [visible, setVisible] = useState(false);
-  const [expendItem, setExpendItem] = useState(null); // {key,open: true}
 
   let cardList = [];
   let dashboardList = [];
@@ -48,24 +46,18 @@ function RenderChartListSider(props) {
 
       <div className="chart-list-content">
         <RenderDropdownMenu
-          openKey={"CARD"}
-          expendItem={expendItem}
           title="数据卡片"
           selectedKey={selectedChartId}
           icon={<ChartPie className="chart-item-icon" size="20" />}
           items={cardList}
-          onOpen={setExpendItem}
           onSelect={handleSelectChart}
         />
 
         <RenderDropdownMenu
-          openKey="DASHBOARD"
           title="仪表盘"
-          expendItem={expendItem}
           icon={<SpeedOne className="chart-item-icon" size="20" />}
           selectedKey={selectedChartId}
           items={dashboardList}
-          onOpen={setExpendItem}
           onSelect={handleSelectChart}
         />
       </div>

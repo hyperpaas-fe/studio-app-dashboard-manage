@@ -6,7 +6,7 @@ import RenderChartModal from "@/components/chartModal";
 import { deleteChart } from "@/services";
 
 function RenderChartDetail(props) {
-  const { appId, item, previewChartUrl, dispatch } = props;
+  const { appId, item, chartPreviewUrl, dispatch } = props;
   const [visible, setVisible] = useState(false);
   const iframeRef = useRef();
 
@@ -43,7 +43,7 @@ function RenderChartDetail(props) {
     />
   );
 
-  if (item && previewChartUrl) {
+  if (item && chartPreviewUrl) {
     renderContent = (
       <>
         <div className="dashboard-content-topbar">
@@ -63,7 +63,7 @@ function RenderChartDetail(props) {
         <iframe
           className="dashboard-content-iframe"
           ref={iframeRef}
-          src={previewChartUrl}
+          src={chartPreviewUrl}
         />
       </>
     );

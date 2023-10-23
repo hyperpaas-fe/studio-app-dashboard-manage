@@ -1,20 +1,20 @@
 import handleRequest from "@hp-view/request";
 import { validateAppId, validateChartId } from "./helpers";
 
-// 用户对当前 App 开启BI能力
-export function enableBi(appId) {
+// 用户开启 app 的 BI 能力
+export function updateAppBiStatus(appId) {
   return validateAppId(appId).then(() =>
     handleRequest(`/studio/app/${appId}/enableBi`, null, { method: "POST" })
   );
 }
 
 // 判断当前租户是否开启BI能力
-export function isTenantEnableBi() {
+export function getTenantEnableStatus() {
   return handleRequest(`/studio/bi/isEnable`);
 }
 
 // 用户是否完成预先设置
-export function isCompletedPreset(appId) {
+export function getBiAvaiableStatus(appId) {
   return validateAppId(appId).then(() =>
     handleRequest(`/studio/app/${appId}/isEnableBi`)
   );
@@ -37,7 +37,7 @@ export function editChart(chartId, payload) {
 }
 
 // 获取卡片与仪表盘的预览地址
-export function previewChart(chartId) {
+export function getChartPreviewLink(chartId) {
   return validateChartId(chartId).then(() =>
     handleRequest(`/studio/bi/${chartId}/link`)
   );

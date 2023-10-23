@@ -1,19 +1,12 @@
-import React, { isValidElement, useMemo } from "react";
+import React, { isValidElement, useMemo, useState } from "react";
 import { DownOne, UpOne } from "@icon-park/react";
 
 function DropdownMenu(props) {
-  const {
-    openKey,
-    expendItem,
-    selectedKey,
-    title,
-    icon,
-    items,
-    onOpen,
-    onSelect,
-  } = props || {};
+  const { selectedKey, title, icon, items, onSelect } = props || {};
 
   const menuIcon = isValidElement(icon) ? icon : null;
+
+  const [open, setOpen] = useState(true);
 
   const isSelected = useMemo(() => {
     if (!selectedKey || !Array.isArray(items)) return false;
@@ -28,36 +21,27 @@ function DropdownMenu(props) {
     }
   };
 
-  const open = useMemo(() => {
-    const { key, open } = expendItem || {};
-    if (openKey === key && open) {
-      return true;
-    }
-    return false;
-  }, [openKey, expendItem]);
-
   const handleToggleIcon = () => {
-    onOpen({ key: openKey, open: !open });
+    setOpen(!open);
   };
+
+  if (!Array.isArray(items) || !items?.length) {
+    return null;
+  }
 
   return (
     <div className="dropdown-menu-con">
       <div
         className="menu-item-parent basic-style"
-        style={{ color: isSelected ? "#8660fd" : "" }}
+        style={isSelected ? { color: "#8660fd" } : {}}
+        onClick={handleToggleIcon}
       >
-        <span
-          className="pin-left"
-          onClick={() => {
-            selectedItem(items[0]);
-            onOpen({ key: openKey, open: true });
-          }}
-        >
+        <span className="pin-left">
           {menuIcon}
           <span style={{ marginLeft: 12 }}>{title}</span>
         </span>
 
-        <span className="pin-right" onClick={handleToggleIcon}>
+        <span className="pin-right">
           {open ? (
             <UpOne size="14" theme="filled" fill="#b3bbc5" />
           ) : (
@@ -65,6 +49,7 @@ function DropdownMenu(props) {
           )}
         </span>
       </div>
+
       {open && (
         <>
           {items.map((item) => (

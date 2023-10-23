@@ -1,24 +1,26 @@
 import { useEffect, useState } from "react";
+import { Result, message, Button } from "antd";
+
 import { generatePreviewPath } from "@/const";
 import RenderChartListSider from "@/module/sider";
 import RenderChartDetail from "@/module/chartDetail";
 import {
-  isTenantEnableBi,
-  isCompletedPreset,
-  previewChart,
+  getTenantEnableStatus,
+  getBiAvaiableStatus,
+  getChartPreviewLink,
   listCharts,
-  enableBi,
+  updateAppBiStatus,
 } from "@/services";
 import "@/assets/style/index.less";
-import { Result, message, Button } from "antd";
 
 function App(props) {
   const { appId } = props || {};
 
+  const [biStatus, setBiStatus] = useState(""); // TENANT_UNAVAILABLE | APP_UNAVAILABLE | AVAILABLE
+
   const [chartList, setChartList] = useState([]);
   const [selectedChartId, setSelectedChartId] = useState(null);
   const [selectedChartUrl, setSelectedChartUrl] = useState(null);
-  const [biAvailable, setBiAvailable] = useState(null);
 
   const activeChartItem = chartList.find(
     (item) => item?.id === selectedChartId
@@ -41,7 +43,7 @@ function App(props) {
 
   const getLatestChartUrl = () => {
     selectedChartId &&
-      previewChart(selectedChartId).then((res) => {
+      getChartPreviewLink(selectedChartId).then((res) => {
         const path = res?.content?.url;
         const previewUrl = generatePreviewPath(path);
         try {
@@ -66,29 +68,38 @@ function App(props) {
   const validateBiAvailable = (appId) => {
     if (!appId) return false;
 
-    isTenantEnableBi().then((res) => {
-      if (!res?.content === true) {
-        return message.warning({
-          content: "当前租户未开启BI能力,请至工作台点击开启~",
-          duration: 3,
-        });
-      }
+    getTenantEnableStatus().then((res) => {
+      const { content } = res || {};
 
-      isCompletedPreset(appId).then((res) => {
-        setBiAvailable(res?.content);
-        typeof dispatch === "function" && dispatch("REFRESH_CHART_LIST");
-      });
+      if (content) {
+        getBiAvaiableStatus(appId).then((res) => {
+          const biAvailable = res?.content;
+
+          if (biAvailable === true) {
+            setBiStatus("AVAILABLE");
+            refreshCharts();
+          } else if (biAvailable === false) {
+            setBiStatus("APP_UNAVAILABLE");
+          } else {
+            message.warning("获取应用信息失败");
+          }
+        });
+      } else if (content === false) {
+        return setBiStatus("TENANT_UNAVAILABLE");
+      } else {
+        message.warning("获取租户信息失败");
+      }
     });
   };
 
   const handleEnableBi = () => {
-    enableBi(appId).then((res) => {
+    updateAppBiStatus(appId).then((res) => {
       const { content } = res || {};
       if (!content) {
-        return message.error("启用失败");
+        return message.warning("启用失败");
       }
 
-      setBiAvailable(content);
+      setBiStatus("AVAILABLE");
     });
   };
 
@@ -100,9 +111,39 @@ function App(props) {
     selectedChartId && getLatestChartUrl();
   }, [selectedChartId]);
 
-  if (biAvailable === false) {
+  if (biStatus === "AVAILABLE") {
     return (
-      <div className="enable-bi-page-contanier ">
+      <div className="app-bi-wrapper">
+        <div className="left-view-menu">
+          <RenderChartListSider
+            appId={appId}
+            selectedChartId={selectedChartId}
+            chartList={chartList}
+            dispatch={dispatch}
+          />
+        </div>
+        <div className="right-dashboard-pannel">
+          <RenderChartDetail
+            appId={appId}
+            item={activeChartItem}
+            chartPreviewUrl={selectedChartUrl}
+            dispatch={dispatch}
+          />
+        </div>
+      </div>
+    );
+  } else if (biStatus === "TENANT_UNAVAILABLE") {
+    return (
+      <div className="enable-bi-page-contanier">
+        <Result
+          title="当前租户尚未开启BI能力"
+          subTitle="请至workspace管理页面开启~"
+        />
+      </div>
+    );
+  } else if (biStatus === "APP_UNAVAILABLE") {
+    return (
+      <div className="enable-bi-page-contanier">
         <Result
           title="当前应用尚未开启BI能力"
           extra={
@@ -113,29 +154,9 @@ function App(props) {
         />
       </div>
     );
+  } else {
+    return <div className="enable-bi-page-contanier"></div>;
   }
-
-  return (
-    <div className="app-bi-wrapper">
-      <div className="left-view-menu">
-        <RenderChartListSider
-          appId={appId}
-          selectedChartId={selectedChartId}
-          chartList={chartList}
-          dispatch={dispatch}
-          b
-        />
-      </div>
-      <div className="right-dashboard-pannel">
-        <RenderChartDetail
-          appId={appId}
-          item={activeChartItem}
-          previewChartUrl={selectedChartUrl}
-          dispatch={dispatch}
-        />
-      </div>
-    </div>
-  );
 }
 
 export default App;
